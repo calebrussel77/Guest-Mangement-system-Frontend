@@ -1,26 +1,20 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import './assets/styles/app.css';
+import Navbar from './components/layouts/Navbar/Navbar.component';
+import {Home} from './components/Pages/Home/Home.component';
+import GuestContextProvider from "./context/guestContext/guestContext";
 
-function App() {
+function App () {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+      <GuestContextProvider>
+          <div className="App">
+              <Navbar />
+              <div className="m-4">
+                  <Home />
+              </div>
+          </div>
+      </GuestContextProvider>
+    );
 }
 
 export default App;
