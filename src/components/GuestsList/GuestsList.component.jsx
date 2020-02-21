@@ -6,7 +6,7 @@ const GuestsList = () => {
   const {guests, filteredGuest, search} = useContext(GuestContext);
 
   return guests.length ? (
-    <div className="border-t-4 border-gray-400 overflow-y-auto h-64 px-8">
+    <div className="border-t-4 border-gray-400 overflow-y-auto h-64 px-16">
       {search !== null
         ? search.map(guest => {
             return <Guest guest={guest} key={guest.id} />;

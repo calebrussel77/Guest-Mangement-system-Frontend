@@ -1,34 +1,32 @@
-import React, { useState, useContext, useEffect } from "react";
-import "./GuestForm.styles.css";
-import { GuestContext } from "../../../context/guestContext/guestContext";
+import React, {useState, useContext, useEffect} from 'react';
+import './GuestForm.styles.css';
+import {GuestContext} from '../../../context/guestContext/guestContext';
 
 export default function GuestsForm() {
-  const { addGuest, editAble, updateGuest, clearEdit } = useContext(
-    GuestContext
-  );
+  const {addGuest, editAble, updateGuest, clearEdit} = useContext(GuestContext);
 
   useEffect(() => {
     if (editAble !== null) {
       setGuest(editAble);
     } else {
       setGuest({
-        name: "",
-        phone: "",
-        dietary: "Non-Veg"
+        name: '',
+        phone: '',
+        dietary: 'Non-Veg',
       });
     }
   }, [editAble]);
 
   const [guest, setGuest] = useState({
-    name: "",
-    phone: "",
-    dietary: "Non-Veg"
+    name: '',
+    phone: '',
+    dietary: 'Non-Veg',
   });
 
   const handleChange = e => {
     setGuest({
       ...guest,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
   };
 
@@ -41,21 +39,21 @@ export default function GuestsForm() {
     } else {
       addGuest(guest);
       setGuest({
-        name: "",
-        phone: "",
-        dietary: "Non-Veg"
+        name: '',
+        phone: '',
+        dietary: 'Non-Veg',
       });
     }
   };
 
   return (
-    <div className="w-full max-w-xs">
+    <div className="w-full max-w-md">
       <form
-        className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 rounded"
+        className="bg-white shadow-md rounded px-10 pt-6 pb-8 mb-4 rounded"
         onSubmit={handleSubmit}
       >
         <h3 className="text-center text-teal-500">
-          {editAble !== null ? "EDIT GUEST" : "INVITE SOMEONE"}
+          {editAble !== null ? 'EDIT GUEST' : 'INVITE SOMEONE'}
         </h3>
         <div className="mb-4">
           <label
@@ -101,7 +99,7 @@ export default function GuestsForm() {
                   type="radio"
                   name="dietary"
                   value="Pescetarians"
-                  checked={guest.dietary === "Pescetarians"}
+                  checked={guest.dietary === 'Pescetarians'}
                   className="hidden"
                   onChange={e => handleChange(e)}
                 />
@@ -119,7 +117,7 @@ export default function GuestsForm() {
                   type="radio"
                   name="dietary"
                   value="Vegan"
-                  checked={guest.dietary === "Vegan"}
+                  checked={guest.dietary === 'Vegan'}
                   className="hidden"
                   onChange={e => handleChange(e)}
                 />
@@ -128,7 +126,7 @@ export default function GuestsForm() {
                   className="flex text-sm items-center cursor-pointer"
                 >
                   <span className="w-4 h-4 inline-block mr-1 rounded-full border border-grey"></span>
-                  Vegan{" "}
+                  Vegan{' '}
                 </label>
               </div>
               <div className="flex items-center mr-4 mb-4">
@@ -138,7 +136,7 @@ export default function GuestsForm() {
                   name="dietary"
                   value="Non-Veg"
                   className="hidden"
-                  checked={guest.dietary === "Non-Veg"}
+                  checked={guest.dietary === 'Non-Veg'}
                   onChange={e => handleChange(e)}
                 />
                 <label
@@ -157,7 +155,7 @@ export default function GuestsForm() {
             className="shadow bg-teal-500 text-sm hover:bg-teal-400 focus:shadow-outline focus:outline-none text-white font-bold px-2 rounded"
             type="submit"
           >
-            {editAble !== null ? "Update Guest" : "Add Guest"}
+            {editAble !== null ? 'Update Guest' : 'Add Guest'}
           </button>
           {editAble !== null ? (
             <input
