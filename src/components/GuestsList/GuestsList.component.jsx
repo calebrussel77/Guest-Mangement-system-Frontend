@@ -1,27 +1,51 @@
-import React, {useContext} from 'react';
+import React, {useEffect} from 'react';
 import Guest from './Guest/Guest.component';
-import {GuestContext} from '../../context/guestContext/guestContext';
+import {connect} from 'react-redux';
+import * as actions from '../../store/actions/index';
 
-const GuestsList = () => {
-  const {guests, filteredGuest, search} = useContext(GuestContext);
+const GuestsList = props => {
+  useEffect(() => {
+    props.onGetAllGuest();
+    console.log('composants render');
+    //eslint-disable-next-line
+  }, []);
 
-  return guests.length ? (
-    <div className="border-t-4 border-gray-400 overflow-y-auto h-64 px-16">
-      {search !== null
-        ? search.map(guest => {
-            return <Guest guest={guest} key={guest.id} />;
+  return props.guests.length ? (
+    <div className="border-t-4 border-gray-400 overflow-y-auto h-64">
+      {props.search !== null
+        ? props.search.map(guest => {
+            return <Guest key={guest._id} guest={guest} />;
           })
-        : guests
+        : props.guests
             .filter(guest => {
-              return !filteredGuest || guest.isConfirmed;
+              //filtered is false then when is true the 2nd condition is not display thenwe have allthe guests
+              //when it's false filter check the 2nd condition and thendiaplay the true condition
+              return !props.filteredGuest || guest.isConfirmed;
             })
             .map(guest => {
-              return <Guest guest={guest} key={guest.id} />;
+              return <Guest key={guest._id} guest={guest} />;
             })}
     </div>
   ) : (
-    <div className="empty">No Guests Found now...</div>
+    <div className="text-2xl font-bold text-gray-900 text-center">
+      No Guests Found now...
+    </div>
   );
 };
 
-export default GuestsList;
+const mapStateToProps = state => {
+  return {
+    search: state.guests.search,
+    guests: state.guests.guests,
+    filteredGuest: state.guests.filteredGuest,
+    error: state.guests.error,
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    onGetAllGuest: () => dispatch(actions.initGuests()),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(GuestsList);

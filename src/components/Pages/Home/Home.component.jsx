@@ -7,13 +7,13 @@ import GuestFilter from '../../GuestFilter/GuestFilter.component';
 
 export const Home = () => {
   return (
-    <div className="flex justify-between p-12">
+    <div className="flex justify-center items-center my-8 ">
       <div className="main-center">
         <GuestsSearch />
         <GuestFilter />
         <GuestsList />
       </div>
-      <div className="pr-10">
+      <div>
         <GuestsForm />
       </div>
       <div>

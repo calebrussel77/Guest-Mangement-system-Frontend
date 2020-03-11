@@ -1,33 +1,23 @@
-import React, {useContext} from 'react';
-import {GuestContext} from '../../../context/guestContext/guestContext';
+import React from 'react';
+import * as actions from '../../../store/actions/index';
+import {connect} from 'react-redux';
 
 const Guest = props => {
   const guest = props.guest;
-  const {removeGuest, updateGuest, editGuest} = useContext(GuestContext);
 
   const handleRemove = guestID => {
-    removeGuest(guestID);
+    props.onRemoveGuest(guestID);
   };
-
-  const handleIsConfirmed = () => {
-    updateGuest({...guest, isConfirmed: !guest.isConfirmed});
-  };
-
   return (
-    <div className="max-w-xs m-2 " key={guest.id}>
+    <div className="max-w-xs m-2 ">
       <div className="h-8 w-full bg-gray-300 flex justify-between">
-        <p
-          className="text-gray-500 text-sm cursor-pointer"
-          onClick={() => {
-            handleIsConfirmed();
-          }}
-        >
+        <p className="text-gray-500 text-sm cursor-pointer">
           {guest.isConfirmed ? 'Confirmed' : 'not-confirmed'}
         </p>
         <div
           className="text-green-500 text-sm cursor-pointer"
           onClick={() => {
-            editGuest(guest);
+            props.onEditGuest(guest);
           }}
         >
           edit
@@ -35,7 +25,7 @@ const Guest = props => {
         <div
           className="text-red-500 text-sm cursor-pointer"
           onClick={() => {
-            handleRemove(guest.id);
+            handleRemove(guest._id);
           }}
         >
           delete
@@ -62,4 +52,10 @@ const Guest = props => {
   );
 };
 
-export default Guest;
+const mapDispatchToProps = dispatch => {
+  return {
+    onRemoveGuest: guestId => dispatch(actions.moveGuest(guestId)),
+    onEditGuest: guest => dispatch(actions.editGuest(guest)),
+  };
+};
+export default connect(null, mapDispatchToProps)(Guest);

@@ -1,13 +1,17 @@
-import React, {useState, useContext, useEffect} from 'react';
+import React, {useState, useEffect} from 'react';
 import './GuestForm.styles.css';
-import {GuestContext} from '../../../context/guestContext/guestContext';
+import {connect} from 'react-redux';
+import * as actions from '../../../store/actions/index';
 
-export default function GuestsForm() {
-  const {addGuest, editAble, updateGuest, clearEdit} = useContext(GuestContext);
-
+const GuestsForm = props => {
   useEffect(() => {
-    if (editAble !== null) {
-      setGuest(editAble);
+    if (props.editAble !== null) {
+      props.onEditGuest(props.editAble);
+      setGuest({
+        name: props.editAble.name,
+        phone: props.editAble.phone,
+        dietary: props.editAble.dietary,
+      });
     } else {
       setGuest({
         name: '',
@@ -15,9 +19,11 @@ export default function GuestsForm() {
         dietary: 'Non-Veg',
       });
     }
-  }, [editAble]);
+    //eslint-disable-next-line
+  }, [props.editAble]);
 
   const [guest, setGuest] = useState({
+    _id: null,
     name: '',
     phone: '',
     dietary: 'Non-Veg',
@@ -27,17 +33,21 @@ export default function GuestsForm() {
     setGuest({
       ...guest,
       [e.target.name]: e.target.value,
+      _id: props.editAble !== null ? props.editAble._id : null,
     });
   };
 
+  const cancelEdit = () => {
+    props.onClearEdit();
+  };
   const handleSubmit = e => {
     e.preventDefault();
-
-    if (editAble !== null) {
-      updateGuest(guest);
-      clearEdit();
+    console.log(guest);
+    if (props.editAble !== null) {
+      props.onSetGuest(guest);
+      props.onClearEdit();
     } else {
-      addGuest(guest);
+      props.onAddingNewGuest(guest);
       setGuest({
         name: '',
         phone: '',
@@ -47,13 +57,13 @@ export default function GuestsForm() {
   };
 
   return (
-    <div className="w-full max-w-md">
+    <div className="max-w-sm">
       <form
-        className="bg-white shadow-md rounded px-10 pt-6 pb-8 mb-4 rounded"
+        className="bg-white shadow-md rounded px-8 py-8 rounded"
         onSubmit={handleSubmit}
       >
         <h3 className="text-center text-teal-500">
-          {editAble !== null ? 'EDIT GUEST' : 'INVITE SOMEONE'}
+          {props.editAble !== null ? 'EDIT GUEST' : 'INVITE SOMEONE'}
         </h3>
         <div className="mb-4">
           <label
@@ -155,13 +165,13 @@ export default function GuestsForm() {
             className="shadow bg-teal-500 text-sm hover:bg-teal-400 focus:shadow-outline focus:outline-none text-white font-bold px-2 rounded"
             type="submit"
           >
-            {editAble !== null ? 'Update Guest' : 'Add Guest'}
+            {props.editAble !== null ? 'Update Guest' : 'Add Guest'}
           </button>
-          {editAble !== null ? (
+          {props.editAble !== null ? (
             <input
               type="button"
               value="Cancel"
-              onClick={clearEdit}
+              onClick={cancelEdit}
               className="shadow bg-gray-500 text-sm hover:bg-gray-400 focus:shadow-outline focus:outline-none text-white font-bold px-2 rounded"
             />
           ) : null}
@@ -169,4 +179,21 @@ export default function GuestsForm() {
       </form>
     </div>
   );
-}
+};
+
+const mapStateToProps = state => {
+  return {
+    editAble: state.guests.editAble,
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    onAddingNewGuest: guest => dispatch(actions.addingNewGuest(guest)),
+    onEditGuest: guest => dispatch(actions.editGuest(guest)),
+    onClearEdit: () => dispatch(actions.clearEdit()),
+    onSetGuest: guest => dispatch(actions.setGuest(guest)),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(GuestsForm);

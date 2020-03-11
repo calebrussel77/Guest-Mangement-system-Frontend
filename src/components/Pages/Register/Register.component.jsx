@@ -1,12 +1,10 @@
-import React, {useState, useContext, useEffect} from 'react';
+import React, {useState, useEffect} from 'react';
 import {Link} from 'react-router-dom';
-import {AuthContext} from '../../../context/authContext/authContext';
-import toastr from 'toastr';
-import 'toastr/build/toastr.min.css';
+import Alert from '../../Alert/Alert.component';
+import {connect} from 'react-redux';
+import * as actions from '../../../store/actions/index';
 
 const Register = props => {
-  const {registerUser, errors, userAuth, formError} = useContext(AuthContext);
-
   const initialState = {
     name: '',
     email: '',
@@ -19,35 +17,18 @@ const Register = props => {
   const handleSubmit = e => {
     e.preventDefault();
     if (password !== confirmPassword) {
-      formError({msg: "Password don't Match"});
+      props.onAuthError("Both Password doesn't match !");
     } else {
-      registerUser({name, email, password});
+      props.onAuth(name, email, password);
     }
   };
 
   useEffect(() => {
-    if (userAuth) {
-      props.history.push('/login', {msgerie: 'caleb bonjour'});
+    if (props.token) {
+      props.history.push('/login');
     }
-  }, [userAuth, props.history]);
-
-  useEffect(() => {
-    const toastrOptions = {
-      hideDuration: 300,
-      timeOut: 6000,
-      progressBar: true,
-    };
-
-    if (errors !== null) {
-      if (errors.error) {
-        //provide by express-validator;
-        toastr.error(errors.error[0].msg, 'Error Message', toastrOptions);
-      }
-      if (errors.msg) {
-        toastr.error(errors.msg, 'Error Message', toastrOptions);
-      }
-    }
-  }, [errors]);
+    //eslint-disable-next-line
+  }, [props.history, props.token]);
 
   const handleChange = e => {
     setUser({
@@ -59,8 +40,17 @@ const Register = props => {
     });
   };
 
+  const setAlertTimeout = (color, msg) => {
+    return <Alert color={color} msg={msg} />;
+  };
+
+  // setTimeout(() => {
+  //   clearTimeout(setAlertTimeout());
+  // }, 2000);
+
   return (
     <div className="w-full max-w-md m-0 m-auto pt-24">
+      {props.error ? setAlertTimeout('red', props.error) : null}
       <form
         className="bg-white shadow-md rounded px-20 py-16"
         onSubmit={handleSubmit}
@@ -113,6 +103,7 @@ const Register = props => {
             name="password"
             value={password}
             required
+            minLength="6"
             onChange={handleChange}
             placeholder="password"
           />
@@ -130,6 +121,7 @@ const Register = props => {
             name="confirmPassword"
             value={confirmPassword || ''}
             onChange={handleChange}
+            minLength="6"
             required
             placeholder="Confirm Password"
           />
@@ -154,5 +146,20 @@ const Register = props => {
     </div>
   );
 };
+const mapStateToProps = state => {
+  return {
+    error: state.auth.error,
+    token: state.auth.token,
+    user: state.auth.user,
+  };
+};
 
-export default Register;
+const mapDispatchToProps = dispatch => {
+  return {
+    onAuth: (name, email, password) =>
+      dispatch(actions.authRegister(name, email, password)),
+    onAuthError: errorMsg => dispatch(actions.authError(errorMsg)),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Register);

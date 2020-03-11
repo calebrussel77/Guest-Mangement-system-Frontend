@@ -1,15 +1,16 @@
-import React, {useContext, useRef} from 'react';
+import React, {useRef} from 'react';
 import './GuestsSearch.styles.css';
-import {GuestContext} from '../../context/guestContext/guestContext';
+import {connect} from 'react-redux';
+import * as actions from '../../store/actions/index';
 
-const GuestsSearch = () => {
-  const {searchGuest, clearSearch} = useContext(GuestContext);
+const GuestsSearch = props => {
   const searchValue = useRef('');
+
   const handleChange = e => {
     if (searchValue.current.value !== '') {
-      searchGuest(e.target.value);
+      props.onSearchGuest(e.target.value);
     } else {
-      clearSearch();
+      props.onClearSearch();
     }
   };
   return (
@@ -28,4 +29,10 @@ const GuestsSearch = () => {
   );
 };
 
-export default GuestsSearch;
+const mapDispatchToProps = dispatch => {
+  return {
+    onSearchGuest: guest => dispatch(actions.searchGuest(guest)),
+    onClearSearch: () => dispatch(actions.clearSearch()),
+  };
+};
+export default connect(null, mapDispatchToProps)(GuestsSearch);
