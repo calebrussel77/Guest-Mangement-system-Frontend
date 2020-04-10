@@ -26,6 +26,9 @@ const guestReducer = (state = initialState, action) => {
         guests: [...state.guests, action.guest],
       });
 
+    case actionTypes.RESET_GUESTS:
+      return updateObject(state, {guests: []});
+
     case actionTypes.ERROR_GUESTS:
       return updateObject(state, {
         error: true,

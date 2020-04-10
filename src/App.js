@@ -1,13 +1,13 @@
 import React, {useEffect} from 'react';
 import './assets/styles/app.css';
-import Navbar from './components/layouts/Navbar/Navbar.component';
-import {Home} from './components/Pages/Home/Home.component';
 import {Route, Switch, withRouter, Redirect} from 'react-router-dom';
-import SingIn from './components/Pages/SignIn/SingIn.component';
-import Register from './components/Pages/Register/Register.component';
 import Logout from './components/Logout/Logout';
 import * as actions from './store/actions/index';
 import {connect} from 'react-redux';
+import Layout from "./hoc/layouts/Layout";
+import Home from "./containers/Home/Home";
+import SingIn from "./containers/SignIn/SingIn";
+import Register from "./containers/Register/Register";
 
 const App = props => {
   useEffect(() => {
@@ -32,10 +32,9 @@ const App = props => {
   }
 
   return (
-    <div className="App font-sans">
-      <Navbar />
-      {routes}
-    </div>
+      <Layout>
+          {routes}
+      </Layout>
   );
 };
 const mapStateToProps = state => {

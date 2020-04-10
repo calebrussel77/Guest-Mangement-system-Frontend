@@ -1,9 +1,9 @@
 import React, {useState} from 'react';
 import {Link, Redirect} from 'react-router-dom';
-import Image from '../../../assets/images/images';
+import Image from '../../assets/images/images';
 import {connect} from 'react-redux';
-import * as actions from '../../../store/actions/index';
-import Alert from '../../Alert/Alert.component';
+import * as actions from '../../store/actions';
+import Alert from '../../components/Alert/Alert';
 
 const SingIn = props => {
   const initialState = {

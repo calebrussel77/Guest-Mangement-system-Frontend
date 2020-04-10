@@ -1,8 +1,8 @@
 import React, {useState, useEffect} from 'react';
 import {Link} from 'react-router-dom';
-import Alert from '../../Alert/Alert.component';
+import Alert from '../../components/Alert/Alert';
 import {connect} from 'react-redux';
-import * as actions from '../../../store/actions/index';
+import * as actions from '../../store/actions';
 
 const Register = props => {
   const initialState = {

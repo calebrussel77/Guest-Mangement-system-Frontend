@@ -23,4 +23,5 @@ export {
   authError,
   authLogout,
   authCheckStatus,
+  resetGuests,
 } from './Auth';

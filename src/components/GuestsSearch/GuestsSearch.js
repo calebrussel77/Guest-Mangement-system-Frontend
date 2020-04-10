@@ -1,5 +1,5 @@
 import React, {useRef} from 'react';
-import './GuestsSearch.styles.css';
+import './GuestsSearch.css';
 import {connect} from 'react-redux';
 import * as actions from '../../store/actions/index';
 

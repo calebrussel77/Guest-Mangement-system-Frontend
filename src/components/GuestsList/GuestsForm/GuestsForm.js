@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import './GuestForm.styles.css';
+import './GuestForm.css';
 import {connect} from 'react-redux';
 import * as actions from '../../../store/actions/index';
 

@@ -1,12 +1,12 @@
 import React, {useEffect} from 'react';
-import Guest from './Guest/Guest.component';
+import Guest from './Guest/Guest';
 import {connect} from 'react-redux';
 import * as actions from '../../store/actions/index';
+import Spinner from '../../UI/Spinner/Spinner';
 
 const GuestsList = props => {
   useEffect(() => {
     props.onGetAllGuest();
-    console.log('composants render');
     //eslint-disable-next-line
   }, []);
 
@@ -28,6 +28,7 @@ const GuestsList = props => {
     </div>
   ) : (
     <div className="text-2xl font-bold text-gray-900 text-center">
+      {props.isLoading ? <Spinner /> : null}
       No Guests Found now...
     </div>
   );
@@ -39,6 +40,7 @@ const mapStateToProps = state => {
     guests: state.guests.guests,
     filteredGuest: state.guests.filteredGuest,
     error: state.guests.error,
+    isLoading: state.guests.isLoading,
   };
 };
 

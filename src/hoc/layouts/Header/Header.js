@@ -2,9 +2,9 @@ import React from 'react';
 import {Link} from 'react-router-dom';
 import {connect} from 'react-redux';
 
-const Navbar = props => {
+const Header = props => {
   return (
-    <div className="navbar m-0 p-0 h-16 bg-white shadow-2xl border-t-4 border-teal-500 w-full">
+    <header className="m-0 p-0 h-16 bg-white shadow-2xl border-t-4 border-teal-500 w-full">
       <div className="container-navbar flex justify-between">
         <div className="logo-svg text-white bg-teal-600 my-2 ml-2 p-0 h-10 ">
           GuestManagement
@@ -35,7 +35,7 @@ const Navbar = props => {
           )}
         </ul>
       </div>
-    </div>
+    </header>
   );
 };
 
@@ -46,4 +46,4 @@ const mapStateToPops = state => {
   };
 };
 
-export default connect(mapStateToPops)(Navbar);
+export default connect(mapStateToPops)(Header);
